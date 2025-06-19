@@ -1,66 +1,79 @@
 <!DOCTYPE html>
-<html class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello World - Go</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-      };
-    </script>
-  </head>
-  <body
-    class="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 transition-colors duration-200"
-  >
-    <div class="max-w-4xl mx-auto relative">
-      <!-- Theme Toggle Button -->
-      <button
-        id="theme-toggle"
-        class="absolute -top-2 right-0 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
-        aria-label="Toggle Theme"
-      >
-        <!-- Sun icon -->
-        <svg
-          class="w-6 h-6 hidden dark:block text-yellow-300"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-          />
-        </svg>
-        <!-- Moon icon -->
-        <svg
-          class="w-6 h-6 block dark:hidden text-gray-800"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-          />
-        </svg>
-      </button>
+<html>
 
-      <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-8">
-        Hello World - Go
-      </h1>
-      <div
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-xl p-6 dark:border dark:border-gray-700"
-      >
-        <p class="text-gray-700 dark:text-gray-300">
-          Welcome to the Go WebAssembly Demo
-        </p>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello World - Go</title>
+
+  <script>
+    document.documentElement.classList.toggle(
+      "dark",
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    );
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+    };
+  </script>
+
+<body class="min-h-screen bg-gray-100 dark:bg-gray-900 p-8 transition-colors duration-200">
+  <div class="max-w-4xl mx-auto relative">
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle"
+      class="absolute -top-2 right-0 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200"
+      aria-label="Toggle Theme">
+      <!-- Sun icon -->
+      <svg class="w-6 h-6 hidden dark:block text-yellow-300" fill="currentColor" viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
+      </svg>
+      <!-- Moon icon -->
+      <svg class="w-6 h-6 block dark:hidden text-gray-800" fill="currentColor" viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+      </svg>
+    </button>
+    <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-8">
+      Hello World - Go
+    </h1>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-xl p-6 dark:border dark:border-gray-700">
+      <p class="text-gray-700 dark:text-gray-300">
+        Welcome to the Go WebAssembly Demo
+      </p>
     </div>
+  </div>
 
-    <!-- 
+  <!-- Theme toggle functionality -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const themeToggle = document.getElementById("theme-toggle");
+
+      themeToggle.addEventListener("click", function () {
+        const isDark = document.documentElement.classList.contains("dark");
+
+        if (isDark) {
+          document.documentElement.classList.remove("dark");
+          localStorage.theme = "light";
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.theme = "dark";
+        }
+      });
+    });
+  </script>
+
+  <!-- 
     The wasm_exec.js must come before our Javascript (index.js), 
     as it defines some global objects 
     -->
-    <script src="./wasm_exec.js"></script>
-    <script type="module" src="./index.js"></script>
-  </body>
+  <script src="./wasm_exec.js"></script>
+  <script type="module" src="./index.js"></script>
+</body>
+
 </html>
