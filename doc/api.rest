@@ -1,0 +1,15 @@
+###
+
+GET http://localhost:9999/api/pranav HTTP/1.1
+content-type: application/json
+
+###
+
+GET http://localhost:9999/api/cat/fact HTTP/1.1
+content-type: application/json
+
+###
+
+GET http://localhost:9999/metrics HTTP/1.1
+content-type: application/json
+
