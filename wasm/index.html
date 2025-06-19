@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World - Go</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-gray-900 p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold text-white mb-8">Hello World - Go</h1>
+      <div class="bg-gray-800 rounded-lg shadow-xl p-6 border border-gray-700">
+        <p class="text-gray-300">Welcome to the Go WebAssembly Demo</p>
+      </div>
+    </div>
+
+
+    <!-- 
+    The wasm_exec.js must come before our Javascript (index.js), 
+    as it defines some global objects 
+    -->
+    <script src="./wasm_exec.js"></script>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>
