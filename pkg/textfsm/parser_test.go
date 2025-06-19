@@ -20,7 +20,6 @@ type Testcase struct {
 }
 
 func TestTextFSMParse(t *testing.T) {
-
 	tests := []Testcase{}
 
 	files, err := os.ReadDir("tests/")
