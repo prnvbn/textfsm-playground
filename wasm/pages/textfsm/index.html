@@ -60,10 +60,16 @@
       >
         Results
       </label>
-      <pre
-        id="results"
-        class="w-full px-3 py-2 border dark:border-github-dark-border rounded-md bg-white dark:bg-github-dark-bg text-gray-700 dark:text-github-dark-fg overflow-x-auto min-h-[100px]"
-      ></pre>
+      <div
+        class="h-64 border dark:border-github-dark-border rounded-md resize-y overflow-hidden"
+      >
+        <wc-monaco-editor
+          id="results-editor"
+          language="json"
+          no-minimap
+          read-only
+        ></wc-monaco-editor>
+      </div>
     </div>
   </div>
 </div> 
