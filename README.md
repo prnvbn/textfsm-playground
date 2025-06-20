@@ -16,4 +16,4 @@ There is a simple go file server which you can used by running `go run cmd/serve
 ## Supported Features
 
 - [x] TextFSM parsing
-- [] JSON Schema Validation
+- [ ] JSON Schema Validation
