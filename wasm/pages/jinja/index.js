@@ -1,4 +1,5 @@
 import { wasmPromise } from "../../loader.js";
+import { registerJinjaLanguage } from "./jinja-language.js";
 
 // Function to initialize editors
 function createEditors() {
@@ -21,6 +22,9 @@ function createEditors() {
     onEditorReady(dataEditor),
     onEditorReady(resultsEditor),
   ]).then(() => {
+    // Register Jinja language after Monaco is available
+    registerJinjaLanguage();
+    
     // Set default Jinja template
     templateEditor.value = [
       "Hello {{ name }}!",
