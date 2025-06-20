@@ -13,7 +13,7 @@ func main() {
 	// TODO? make this configurable
 	cfg := &server.Config{
 		Port:    9999,
-		WasmDir: "./wasm/dist",
+		WasmDir: "./wasm",
 	}
 
 	srv := server.New(cfg)
