@@ -33,6 +33,10 @@
         },
       };
     </script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/gh/vanillawc/wc-monaco-editor@1/index.js"
+    ></script>
   </head>
 
   <body
@@ -193,7 +197,27 @@
           try {
             const response = await fetch(`./pages/${pageName}.html`);
             const html = await response.text();
-            content.innerHTML = html;
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+
+            // Clear the existing content
+            content.innerHTML = "";
+
+            // Append nodes from the fetched document's body
+            Array.from(doc.body.children).forEach((node) => {
+              if (node.tagName.toLowerCase() !== 'script') {
+                content.appendChild(node.cloneNode(true));
+              }
+            });
+
+            // Find and execute scripts
+            const scripts = doc.querySelectorAll("script");
+            scripts.forEach((script) => {
+              const newScript = document.createElement("script");
+              newScript.textContent = script.textContent;
+              document.body.appendChild(newScript).parentNode.removeChild(newScript);
+            });
 
             // Update active tab
             tabs.forEach((tab) => {
@@ -208,11 +232,6 @@
 
             // Save current page to localStorage
             localStorage.setItem("currentPage", pageName);
-
-            // Initialize Monaco editor if we're on the TextFSM page
-            if (pageName === "textfsm" && window.createEditors) {
-              window.createEditors();
-            }
           } catch (error) {
             console.error("Error loading page:", error);
             content.innerHTML =
