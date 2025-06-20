@@ -20,3 +20,4 @@ build: wasm_exec.js main.wasm
 	cp *.js dist
 	cp *.html dist
 	cp main.wasm dist
+	cp ../version.txt dist

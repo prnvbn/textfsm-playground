@@ -18,7 +18,7 @@ jobs:
 
       - name: Get version
         id: version
-        run: echo "version=$(head -c -1 version.txt)" >> $GITHUB_OUTPUT
+        run: echo "version=$(head -c -1 version.txt)" >> $GITHUB_ENV
 
       - name: Generate dist folder
         working-directory: wasm
@@ -36,4 +36,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          tag_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ env.version }}
+          name: Release ${{ env.version }}
