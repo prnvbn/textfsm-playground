@@ -64,6 +64,23 @@ function createEditors() {
       const template = templateEditor.value;
       const input = inputEditor.value;
       const resultsEditor = document.getElementById("results-editor");
+      const resultsContainer = resultsEditor.parentElement;
+
+      const flashBorder = (success) => {
+        const originalDarkBorder = "dark:border-github-dark-border";
+        const successClasses = ["border-green-500", "dark:border-green-500"];
+        const errorClasses = ["border-red-500", "dark:border-red-500"];
+
+        const classesToAdd = success ? successClasses : errorClasses;
+
+        resultsContainer.classList.remove(originalDarkBorder);
+        resultsContainer.classList.add(...classesToAdd);
+
+        setTimeout(() => {
+          resultsContainer.classList.remove(...classesToAdd);
+          resultsContainer.classList.add(originalDarkBorder);
+        }, 1000);
+      };
 
       try {
         await wasmPromise;
@@ -74,9 +91,11 @@ function createEditors() {
 
         const formattedJson = JSON.stringify(JSON.parse(jsonString), null, 2);
         resultsEditor.value = formattedJson;
+        flashBorder(true);
       } catch (error) {
         console.error("An error occurred:", error);
         resultsEditor.value = "Error: " + error.message;
+        flashBorder(false);
       }
     });
 }
