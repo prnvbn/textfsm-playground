@@ -53,40 +53,28 @@ function createEditors() {
     attributeFilter: ["class"],
   });
 
-  // Handle parse button click
   document
     .getElementById("parse-button")
-    .addEventListener("click", function () {
+    .addEventListener("click", async function () {
       const template = templateEditor.value;
       const input = inputEditor.value;
+      const resultsEl = document.getElementById("results");
 
-      wasmPromise
-        .then(() => {
-          const result = window.parseTextFSM(template, input);
-          const resultsEl = document.getElementById("results");
+      try {
+        await wasmPromise;
 
-          if (result.error) {
-            resultsEl.textContent = "Error: " + result.error;
-            resultsEl.classList.add("text-red-500");
-          } else {
-            // The data is a JSON string, so we parse it to get the object,
-            // then stringify it again for pretty-printing.
-            const formattedJson = JSON.stringify(
-              JSON.parse(result.data),
-              null,
-              2
-            );
-            resultsEl.textContent = formattedJson;
-            resultsEl.classList.remove("text-red-500");
-          }
-        })
-        .catch((error) => {
-          console.error("Error accessing WebAssembly module:", error);
-          const results = document.getElementById("results");
-          results.textContent =
-            "Error: The WebAssembly module failed to load. Please check the console for details.";
-          results.classList.add("text-red-500");
-        });
+        resultsEl.textContent = "Parsing...";
+        resultsEl.classList.remove("text-red-500");
+
+        const jsonString = await window.parseTextFSM(template, input);
+
+        const formattedJson = JSON.stringify(JSON.parse(jsonString), null, 2);
+        resultsEl.textContent = formattedJson;
+      } catch (error) {
+        console.error("An error occurred:", error);
+        resultsEl.textContent = "Error: " + error.message;
+        resultsEl.classList.add("text-red-500");
+      }
     });
 }
 
