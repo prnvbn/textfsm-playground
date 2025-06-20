@@ -6,13 +6,14 @@ import (
 	"os/signal"
 	"syscall"
 
-	"go-rest/internal/server"
+	"github.com/prnvbn/textfsm-playground/internal/server"
 )
 
 func main() {
+	// TODO? make this configurable
 	cfg := &server.Config{
 		Port:    9999,
-		WasmDir: "./wasm",
+		WasmDir: "./wasm/dist",
 	}
 
 	srv := server.New(cfg)

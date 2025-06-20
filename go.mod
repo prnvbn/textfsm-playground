@@ -1,4 +1,4 @@
-module go-rest
+module github.com/prnvbn/textfsm-playground
 
 go 1.24
 

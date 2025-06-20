@@ -3,9 +3,10 @@ package textfsm_test
 import (
 	"encoding/json"
 	"fmt"
-	"go-rest/pkg/textfsm"
 	"os"
 	"testing"
+
+	"github.com/prnvbn/textfsm-playground/pkg/textfsm"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/assert"

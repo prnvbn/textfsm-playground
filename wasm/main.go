@@ -5,8 +5,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"go-rest/pkg/textfsm"
 	"syscall/js"
+
+	"github.com/prnvbn/textfsm-playground/pkg/textfsm"
 
 	"github.com/rs/zerolog/log"
 )
