@@ -1,3 +1,5 @@
+import { wasmPromise } from "../../loader.js";
+
 // Function to initialize editors
 function createEditors() {
   const templateEditor = document.getElementById("template-editor");
@@ -57,13 +59,24 @@ function createEditors() {
     .addEventListener("click", function () {
       const template = templateEditor.value;
       const input = inputEditor.value;
-      // TODO: Add parsing logic here
-      document.getElementById("results").textContent =
-        "Parsing not implemented yet";
+
+      wasmPromise
+        .then((result) => {
+          console.log(result);
+          // TODO: Add parsing logic here, using result.instance.exports
+          document.getElementById("results").textContent =
+            "Parsing not implemented yet";
+        })
+        .catch((error) => {
+          console.error("Error accessing WebAssembly module:", error);
+          const results = document.getElementById("results");
+          results.textContent =
+            "Error: The WebAssembly module failed to load. Please check the console for details.";
+          results.classList.add("text-red-500");
+        });
     });
 }
 
 export function init() {
   createEditors();
 }
-

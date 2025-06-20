@@ -1,4 +1,4 @@
-import { wasmPromise } from "./loader.js";
+const go = new Go();
 
 const loadingModal = document.getElementById("loadingModal");
 const loadingState = document.getElementById("loadingState");
@@ -12,7 +12,7 @@ const showError = (error) => {
 };
 
 // Load and initialize WASM
-const loadWasm = async () => {
+async function loadWasm() {
   const result = await WebAssembly.instantiateStreaming(
     fetch("main.wasm"),
     go.importObject
@@ -31,11 +31,6 @@ const loadWasm = async () => {
     showError(new Error("Failed to execute the WASM module"));
     throw error;
   }
-};
+}
 
-// Example usage
-wasmPromise.then((result) => {
-  const wasmAdd = result.instance.exports.add;
-  const sum = wasmAdd(5, 3);
-  console.log("Result of add(5, 3):", sum);
-});
+export const wasmPromise = loadWasm(); 
