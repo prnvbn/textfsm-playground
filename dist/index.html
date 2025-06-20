@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World - Go</title>
+
+    <script>
+      document.documentElement.classList.toggle(
+        "dark",
+        localStorage.theme === "dark" ||
+          (!("theme" in localStorage) &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+      );
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "github-dark": {
+                bg: "#0d1117",
+                fg: "#c9d1d9",
+                border: "#30363d",
+                button: "#21262d",
+                "button-hover": "#30363d",
+                accent: "#58a6ff",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/gh/vanillawc/wc-monaco-editor@1/index.js"
+    ></script>
+  </head>
+
+  <body
+    class="min-h-screen bg-gray-100 dark:bg-github-dark-bg p-8 transition-colors duration-200"
+  >
+    <div class="max-w-4xl mx-auto relative">
+      <!-- Theme Toggle Button -->
+      <button
+        id="theme-toggle"
+        class="absolute -top-2 right-0 p-2 rounded-lg bg-gray-200 dark:bg-github-dark-button hover:bg-gray-300 dark:hover:bg-github-dark-button-hover transition-colors duration-200"
+        aria-label="Toggle Theme"
+      >
+        <!-- Sun icon -->
+        <svg
+          class="w-6 h-6 hidden dark:block text-github-dark-fg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+          />
+        </svg>
+        <!-- Moon icon -->
+        <svg
+          class="w-6 h-6 block dark:hidden text-gray-800"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+          />
+        </svg>
+      </button>
+      <h1
+        class="text-4xl font-bold text-gray-800 dark:text-github-dark-fg mb-8"
+      >
+        Hello World - Go
+      </h1>
+
+      <!-- Navigation Bar -->
+      <nav class="mb-8">
+        <div class="border-b dark:border-github-dark-border">
+          <div class="flex space-x-8">
+            <button
+              class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 tab-button active"
+              data-page="home"
+            >
+              Home
+            </button>
+            <button
+              class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 tab-button"
+              data-page="textfsm"
+            >
+              TextFSM
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Content Container -->
+      <div id="content">
+        <!-- Content will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div
+      id="loadingModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div
+        class="bg-white dark:bg-github-dark-button rounded-lg p-6 max-w-sm w-full mx-4 text-center border dark:border-github-dark-border"
+      >
+        <!-- Loading State -->
+        <div id="loadingState" class="space-y-4">
+          <div
+            class="animate-spin rounded-full h-12 w-12 border-b-2 border-github-dark-accent mx-auto"
+          ></div>
+          <p class="text-gray-700 dark:text-github-dark-fg">
+            Loading WebAssembly...
+          </p>
+        </div>
+        <!-- Error State -->
+        <div id="errorState" class="hidden space-y-4">
+          <div class="text-red-500 mx-auto">
+            <svg
+              class="h-12 w-12 mx-auto"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+          </div>
+          <p class="text-red-600 dark:text-red-400 font-medium">
+            Failed to load WebAssembly
+          </p>
+          <p
+            id="errorMessage"
+            class="text-gray-600 dark:text-github-dark-fg text-sm"
+          ></p>
+          <button
+            onclick="location.reload()"
+            class="mt-4 px-4 py-2 bg-github-dark-accent text-white rounded hover:opacity-90 transition-opacity"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Theme toggle functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const themeToggle = document.getElementById("theme-toggle");
+
+        themeToggle.addEventListener("click", function () {
+          const isDark = document.documentElement.classList.contains("dark");
+
+          if (isDark) {
+            document.documentElement.classList.remove("dark");
+            localStorage.theme = "light";
+          } else {
+            document.documentElement.classList.add("dark");
+            localStorage.theme = "dark";
+          }
+        });
+
+        // Navigation functionality
+        const content = document.getElementById("content");
+        const tabs = document.querySelectorAll(".tab-button");
+
+        // Style classes for active/inactive tabs
+        const activeClasses = [
+          "border-github-dark-accent",
+          "text-github-dark-accent",
+          "dark:border-github-dark-accent",
+          "dark:text-github-dark-accent",
+        ];
+        const inactiveClasses = [
+          "border-transparent",
+          "text-gray-500",
+          "hover:text-gray-700",
+          "hover:border-gray-300",
+          "dark:text-gray-400",
+          "dark:hover:text-github-dark-fg",
+          "dark:hover:border-github-dark-border",
+        ];
+
+        async function loadPage(pageName) {
+          try {
+            // Fetch the HTML content
+            const htmlResponse = await fetch(`./pages/${pageName}/index.html`);
+            if (!htmlResponse.ok) {
+              throw new Error(`Failed to load HTML for ${pageName}`);
+            }
+            content.innerHTML = await htmlResponse.text();
+
+            // Dynamically import the page-specific JavaScript module
+            try {
+              const pageModule = await import(
+                `./pages/${pageName}/index.js?v=${new Date().getTime()}`
+              );
+              if (pageModule.init) {
+                pageModule.init();
+              }
+            } catch (e) {
+              console.error("Error loading script:", e);
+            }
+
+            // Update active tab
+            tabs.forEach((tab) => {
+              if (tab.dataset.page === pageName) {
+                tab.classList.remove(...inactiveClasses);
+                tab.classList.add(...activeClasses);
+              } else {
+                tab.classList.remove(...activeClasses);
+                tab.classList.add(...inactiveClasses);
+              }
+            });
+
+            // Save current page to localStorage
+            localStorage.setItem("currentPage", pageName);
+          } catch (error) {
+            console.error("Error loading page:", error);
+            content.innerHTML =
+              '<p class="text-red-500">Error loading page content</p>';
+          }
+        }
+
+        // Add click handlers to tabs
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            loadPage(tab.dataset.page);
+          });
+        });
+
+        // Load the saved page or default to home
+        const savedPage = localStorage.getItem("currentPage") || "home";
+        loadPage(savedPage);
+      });
+    </script>
+
+    <!-- 
+    The wasm_exec.js must come before our Javascript (index.js), 
+    as it defines some global objects 
+    -->
+    <script src="./wasm_exec.js"></script>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>

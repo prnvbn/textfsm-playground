@@ -1,0 +1,69 @@
+<div
+  class="bg-white dark:bg-github-dark-button rounded-lg shadow-md dark:shadow-xl p-6 border dark:border-github-dark-border"
+>
+  <h2 class="text-2xl font-bold text-gray-800 dark:text-github-dark-fg mb-4">
+    TextFSM Parser
+  </h2>
+  <p class="text-gray-700 dark:text-github-dark-fg mb-4">
+    Parse structured text using TextFSM templates. This tool helps you extract
+    data from semi-structured text output like CLI command results, log files,
+    or any text with a consistent pattern.
+  </p>
+
+  <!-- Parser Form -->
+  <div class="space-y-6">
+    <div class="flex space-x-4">
+      <div class="w-1/2">
+        <label
+          class="block text-sm font-medium text-gray-700 dark:text-github-dark-fg mb-2"
+        >
+          TextFSM Template
+        </label>
+        <div
+          class="h-64 border dark:border-github-dark-border rounded-md resize-y overflow-hidden"
+        >
+          <wc-monaco-editor
+            id="template-editor"
+            language="plaintext"
+            no-minimap
+          ></wc-monaco-editor>
+        </div>
+      </div>
+      <div class="w-1/2">
+        <label
+          class="block text-sm font-medium text-gray-700 dark:text-github-dark-fg mb-2"
+        >
+          Input Text
+        </label>
+        <div
+          class="h-64 border dark:border-github-dark-border rounded-md resize-y overflow-hidden"
+        >
+          <wc-monaco-editor
+            id="input-editor"
+            language="plaintext"
+            no-minimap
+          ></wc-monaco-editor>
+        </div>
+      </div>
+    </div>
+
+    <button
+      id="parse-button"
+      class="w-full px-4 py-2 bg-github-dark-accent text-white rounded-md hover:opacity-90 transition-opacity"
+    >
+      Parse Text
+    </button>
+
+    <div>
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-github-dark-fg mb-2"
+      >
+        Results
+      </label>
+      <pre
+        id="results"
+        class="w-full px-3 py-2 border dark:border-github-dark-border rounded-md bg-white dark:bg-github-dark-bg text-gray-700 dark:text-github-dark-fg overflow-x-auto min-h-[100px]"
+      ></pre>
+    </div>
+  </div>
+</div> 
