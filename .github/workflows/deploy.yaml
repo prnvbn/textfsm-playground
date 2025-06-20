@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - version.txt
 
 jobs:
   deploy:
@@ -12,13 +14,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Wasm
-        run: make -C wasm build
+      - name: Generate dist folder
+        run: make -C build
 
-      - name: Deploy to GitHub Pages
+      - name: Push to deploy branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./wasm/dist
           publish_branch: deploy
           destination_dir: dist
+
+      - name: Create release
+        uses: softprops/action-gh-release@v4
+        with:
+          generate_release_notes: true
