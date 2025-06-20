@@ -195,29 +195,24 @@
 
         async function loadPage(pageName) {
           try {
-            const response = await fetch(`./pages/${pageName}.html`);
-            const html = await response.text();
+            // Fetch the HTML content
+            const htmlResponse = await fetch(`./pages/${pageName}/index.html`);
+            if (!htmlResponse.ok) {
+              throw new Error(`Failed to load HTML for ${pageName}`);
+            }
+            content.innerHTML = await htmlResponse.text();
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, "text/html");
-
-            // Clear the existing content
-            content.innerHTML = "";
-
-            // Append nodes from the fetched document's body
-            Array.from(doc.body.children).forEach((node) => {
-              if (node.tagName.toLowerCase() !== 'script') {
-                content.appendChild(node.cloneNode(true));
+            // Dynamically import the page-specific JavaScript module
+            try {
+              const pageModule = await import(
+                `./pages/${pageName}/index.js?v=${new Date().getTime()}`
+              );
+              if (pageModule.init) {
+                pageModule.init();
               }
-            });
-
-            // Find and execute scripts
-            const scripts = doc.querySelectorAll("script");
-            scripts.forEach((script) => {
-              const newScript = document.createElement("script");
-              newScript.textContent = script.textContent;
-              document.body.appendChild(newScript).parentNode.removeChild(newScript);
-            });
+            } catch (e) {
+              console.error("Error loading script:", e);
+            }
 
             // Update active tab
             tabs.forEach((tab) => {
