@@ -1,3 +1,3 @@
 # WASM
 
-Run `make` to generate the wasm binary
+Run `make build` to generate the `dist` folder which has the relevant files that need to be served.
