@@ -1,0 +1,9 @@
+Hello {{ name }}!
+
+{%- if age %}
+You are {{ age }} years old.
+{% endif %}
+
+{%- for item in items -%}
+- {{ item }}
+{% endfor %}
