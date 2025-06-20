@@ -1,10 +1,10 @@
 all: wasm_exec.js main.wasm
 
 wasm_exec.js:
-	cp $(shell tinygo env TINYGOROOT)/targets/wasm_exec.js .
+	cp $(shell go env GOROOT)/lib/wasm/wasm_exec.js .
 
-main.wasm:
-	tinygo build -o main.wasm -target wasm ./main.go
+main.wasm: main.go $(shell find .. -name '*.go')
+	GOOS=js GOARCH=wasm go build -o main.wasm ./main.go
 
 clean:
 	rm -f wasm_exec.js main.wasm

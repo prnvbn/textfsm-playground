@@ -61,11 +61,12 @@ function createEditors() {
       const input = inputEditor.value;
 
       wasmPromise
-        .then((result) => {
-          console.log(result);
-          // TODO: Add parsing logic here, using result.instance.exports
+        .then(() => {
+          const res = parseTextFSM(template, input);
+          console.log(res);
+
           document.getElementById("results").textContent =
-            "Parsing not implemented yet";
+            "Parse function called. Check browser and server logs.";
         })
         .catch((error) => {
           console.error("Error accessing WebAssembly module:", error);
