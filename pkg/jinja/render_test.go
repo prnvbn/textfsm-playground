@@ -55,7 +55,7 @@ func TestJinjaParse(t *testing.T) {
 		})
 
 		if os.Getenv("UPDATE_SNAPSHOTS") == "true" {
-			rendered, err := jinja.Parse(string(template), data)
+			rendered, err := jinja.Render(string(template), data)
 			require.NoError(t, err)
 			err = os.WriteFile(renderedPath, []byte(rendered), 0644)
 			require.NoError(t, err)
@@ -63,7 +63,7 @@ func TestJinjaParse(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rendered, err := jinja.Parse(test.Template, test.Data)
+		rendered, err := jinja.Render(test.Template, test.Data)
 		require.NoError(t, err)
 
 		if ok := assert.Equal(t, test.Rendered, rendered); !ok {
