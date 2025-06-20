@@ -9,7 +9,7 @@ import (
 func Parse(template, text string) ([]map[string]any, error) {
 	fsm := gotextfsm.TextFSM{}
 
-	err := fsm.ParseString(string(template))
+	err := fsm.ParseString(template)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse template: %w", err)
 	}
