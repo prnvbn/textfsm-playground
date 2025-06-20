@@ -56,10 +56,30 @@
     <h1 class="text-4xl font-bold text-gray-800 dark:text-github-dark-fg mb-8">
       Hello World - Go
     </h1>
-    <div class="bg-white dark:bg-github-dark-button rounded-lg shadow-md dark:shadow-xl p-6 border dark:border-github-dark-border">
-      <p class="text-gray-700 dark:text-github-dark-fg">
-        Welcome to the Go WebAssembly Demo
-      </p>
+
+    <!-- Navigation Bar -->
+    <nav class="mb-8">
+      <div class="border-b dark:border-github-dark-border">
+        <div class="flex space-x-8">
+          <button
+            class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 tab-button active"
+            data-page="home"
+          >
+            Home
+          </button>
+          <button
+            class="py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 tab-button"
+            data-page="textfsm"
+          >
+            TextFSM
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content Container -->
+    <div id="content">
+      <!-- Content will be loaded here -->
     </div>
   </div>
 
@@ -89,8 +109,8 @@
     </div>
   </div>
 
-  <!-- Theme toggle functionality -->
   <script>
+    // Theme toggle functionality
     document.addEventListener("DOMContentLoaded", function () {
       const themeToggle = document.getElementById("theme-toggle");
 
@@ -105,6 +125,55 @@
           localStorage.theme = "dark";
         }
       });
+
+      // Navigation functionality
+      const content = document.getElementById('content');
+      const tabs = document.querySelectorAll('.tab-button');
+      
+      // Style classes for active/inactive tabs
+      const activeClasses = ['border-github-dark-accent', 'text-github-dark-accent', 'dark:border-github-dark-accent', 'dark:text-github-dark-accent'];
+      const inactiveClasses = ['border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300', 'dark:text-gray-400', 'dark:hover:text-github-dark-fg', 'dark:hover:border-github-dark-border'];
+
+      async function loadPage(pageName) {
+        try {
+          const response = await fetch(`./pages/${pageName}.html`);
+          const html = await response.text();
+          content.innerHTML = html;
+
+          // Update active tab
+          tabs.forEach(tab => {
+            if (tab.dataset.page === pageName) {
+              tab.classList.remove(...inactiveClasses);
+              tab.classList.add(...activeClasses);
+            } else {
+              tab.classList.remove(...activeClasses);
+              tab.classList.add(...inactiveClasses);
+            }
+          });
+
+          // Save current page to localStorage
+          localStorage.setItem('currentPage', pageName);
+
+          // Initialize Monaco editor if we're on the TextFSM page
+          if (pageName === 'textfsm' && window.createEditors) {
+            window.createEditors();
+          }
+        } catch (error) {
+          console.error('Error loading page:', error);
+          content.innerHTML = '<p class="text-red-500">Error loading page content</p>';
+        }
+      }
+
+      // Add click handlers to tabs
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          loadPage(tab.dataset.page);
+        });
+      });
+
+      // Load the saved page or default to home
+      const savedPage = localStorage.getItem('currentPage') || 'home';
+      loadPage(savedPage);
     });
   </script>
 
