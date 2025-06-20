@@ -1,0 +1,6 @@
+Value Interface (\S+)
+Value Status (up|down|administratively down)
+Value Protocol (up|down)
+
+Start
+  ^${Interface} is ${Status}, line protocol is ${Protocol} -> Record 

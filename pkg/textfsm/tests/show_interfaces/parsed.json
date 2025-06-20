@@ -1,0 +1,12 @@
+[
+    {
+        "Interface": "GigabitEthernet1",
+        "Protocol": "up",
+        "Status": "up"
+    },
+    {
+        "Interface": "GigabitEthernet2",
+        "Protocol": "down",
+        "Status": "administratively down"
+    }
+]

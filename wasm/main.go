@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"syscall/js"
 
+	"github.com/prnvbn/textfsm-playground/pkg/jinja"
 	"github.com/prnvbn/textfsm-playground/pkg/textfsm"
 
 	"github.com/rs/zerolog/log"
@@ -42,6 +43,13 @@ func promisify(fn fn) js.Func {
 					return
 				}
 
+				// If result is already a string, don't JSON marshal it
+				if str, ok := result.(string); ok {
+					resolve.Invoke(str)
+					return
+				}
+
+				// For other types, JSON marshal them
 				jsonResult, err := json.Marshal(result)
 				if err != nil {
 					errorConstructor := js.Global().Get("Error")
@@ -74,10 +82,25 @@ func parseTextFSMHandler(args []js.Value) (any, error) {
 	return textfsm.Parse(template, text)
 }
 
-func main() {
-	// Register our Go function, now wrapped in a promise.
-	js.Global().Set("parseTextFSM", promisify(parseTextFSMHandler))
+func renderJinjaHandler(args []js.Value) (any, error) {
+	if len(args) != 2 {
+		return nil, fmt.Errorf("expected 2 arguments, got %d", len(args))
+	}
+	template := args[0].String()
+	data := args[1].String()
 
-	// Keep the Go program alive.
+	var dataMap map[string]any
+	err := json.Unmarshal([]byte(data), &dataMap)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal data: %w", err)
+	}
+
+	return jinja.Render(template, dataMap)
+}
+
+func main() {
+	js.Global().Set("parseTextFSM", promisify(parseTextFSMHandler))
+	js.Global().Set("renderJinja", promisify(renderJinjaHandler))
+
 	select {}
 }
