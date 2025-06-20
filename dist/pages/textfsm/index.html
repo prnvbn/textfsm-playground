@@ -5,12 +5,11 @@
     TextFSM Parser
   </h2>
   <p class="text-gray-700 dark:text-github-dark-fg mb-4">
-    Parse structured text using TextFSM templates. This tool helps you extract
-    data from semi-structured text output like CLI command results, log files,
-    or any text with a consistent pattern.
+    Parse structured text using TextFSM templates.
+
+    <!-- Parser Form -->
   </p>
 
-  <!-- Parser Form -->
   <div class="space-y-6">
     <div class="flex space-x-4">
       <div class="w-1/2">
@@ -60,10 +59,16 @@
       >
         Results
       </label>
-      <pre
-        id="results"
-        class="w-full px-3 py-2 border dark:border-github-dark-border rounded-md bg-white dark:bg-github-dark-bg text-gray-700 dark:text-github-dark-fg overflow-x-auto min-h-[100px]"
-      ></pre>
+      <div
+        class="h-64 border dark:border-github-dark-border rounded-md resize-y overflow-hidden transition-colors duration-300 ease-in-out"
+      >
+        <wc-monaco-editor
+          id="results-editor"
+          language="json"
+          no-minimap
+          read-only
+        ></wc-monaco-editor>
+      </div>
     </div>
   </div>
-</div> 
+</div>

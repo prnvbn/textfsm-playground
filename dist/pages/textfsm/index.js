@@ -4,6 +4,7 @@ import { wasmPromise } from "../../loader.js";
 function createEditors() {
   const templateEditor = document.getElementById("template-editor");
   const inputEditor = document.getElementById("input-editor");
+  const resultsEditor = document.getElementById("results-editor");
 
   const onEditorReady = (editor) => {
     return new Promise((resolve) => {
@@ -15,25 +16,29 @@ function createEditors() {
     });
   };
 
-  Promise.all([onEditorReady(templateEditor), onEditorReady(inputEditor)]).then(
-    () => {
-      templateEditor.value = [
-        "Value UPTIME (\\d+:\\d+:\\d+)",
-        "Value VERSION (\\d+\\.\\d+\\.[A-Z]+)",
-        "",
-        "Start",
-        "  ^Time since last reboot: ${UPTIME}",
-        "  ^Version: ${VERSION} -> Record",
-      ].join("\n");
+  Promise.all([
+    onEditorReady(templateEditor),
+    onEditorReady(inputEditor),
+    onEditorReady(resultsEditor),
+  ]).then(() => {
+    templateEditor.value = [
+      "Value UPTIME (\\d+:\\d+:\\d+)",
+      "Value VERSION (\\d+\\.\\d+\\.[A-Z]+)",
+      "",
+      "Start",
+      "  ^Time since last reboot: ${UPTIME}",
+      "  ^Version: ${VERSION} -> Record",
+    ].join("\n");
 
-      inputEditor.value = [
-        "System Status:",
-        "Time since last reboot: 5:10:23",
-        "Version: 2.1.GA",
-        "Memory Usage: 65%",
-      ].join("\n");
-    }
-  );
+    inputEditor.value = [
+      "System Status:",
+      "Time since last reboot: 5:10:23",
+      "Version: 2.1.GA",
+      "Memory Usage: 65%",
+    ].join("\n");
+
+    resultsEditor.editor.updateOptions({ readOnly: true });
+  });
 
   // Update editor themes when the page theme changes
   const observer = new MutationObserver(function (mutations) {
@@ -58,22 +63,39 @@ function createEditors() {
     .addEventListener("click", async function () {
       const template = templateEditor.value;
       const input = inputEditor.value;
-      const resultsEl = document.getElementById("results");
+      const resultsEditor = document.getElementById("results-editor");
+      const resultsContainer = resultsEditor.parentElement;
+
+      const flashBorder = (success) => {
+        const originalDarkBorder = "dark:border-github-dark-border";
+        const successClasses = ["border-green-500", "dark:border-green-500"];
+        const errorClasses = ["border-red-500", "dark:border-red-500"];
+
+        const classesToAdd = success ? successClasses : errorClasses;
+
+        resultsContainer.classList.remove(originalDarkBorder);
+        resultsContainer.classList.add(...classesToAdd);
+
+        setTimeout(() => {
+          resultsContainer.classList.remove(...classesToAdd);
+          resultsContainer.classList.add(originalDarkBorder);
+        }, 1000);
+      };
 
       try {
         await wasmPromise;
 
-        resultsEl.textContent = "Parsing...";
-        resultsEl.classList.remove("text-red-500");
+        resultsEditor.value = "Parsing...";
 
         const jsonString = await window.parseTextFSM(template, input);
 
         const formattedJson = JSON.stringify(JSON.parse(jsonString), null, 2);
-        resultsEl.textContent = formattedJson;
+        resultsEditor.value = formattedJson;
+        flashBorder(true);
       } catch (error) {
         console.error("An error occurred:", error);
-        resultsEl.textContent = "Error: " + error.message;
-        resultsEl.classList.add("text-red-500");
+        resultsEditor.value = "Error: " + error.message;
+        flashBorder(false);
       }
     });
 }
