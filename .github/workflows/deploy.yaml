@@ -16,6 +16,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Get version
+        id: version
+        run: echo "version=$(head -c -1 version.txt)" >> $GITHUB_OUTPUT
+
       - name: Generate dist folder
         working-directory: wasm
         run: make build
@@ -32,3 +36,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          tag_name: ${{ steps.version.outputs.version }}
