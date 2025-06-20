@@ -10,12 +10,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Generate dist folder
-        run: make -C build
+        working-directory: wasm
+        run: make build
 
       - name: Push to deploy branch
         uses: peaceiris/actions-gh-pages@v4
