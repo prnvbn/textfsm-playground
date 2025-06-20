@@ -1,6 +1,13 @@
-.PHONY: all build clean
+.PHONY: build clean
 
-all: wasm_exec.js main.wasm
+build: wasm_exec.js main.wasm
+	mkdir -p dist
+	cp -r pages dist
+	cp *.js dist
+	cp *.html dist
+	cp main.wasm dist
+	cp ../version.txt dist
+
 
 wasm_exec.js:
 	cp $(shell go env GOROOT)/lib/wasm/wasm_exec.js .
@@ -14,10 +21,3 @@ clean:
 	rm -rf dist
 
 
-build: wasm_exec.js main.wasm
-	mkdir -p dist
-	cp -r pages dist
-	cp *.js dist
-	cp *.html dist
-	cp main.wasm dist
-	cp ../version.txt dist
