@@ -62,11 +62,23 @@ function createEditors() {
 
       wasmPromise
         .then(() => {
-          const res = parseTextFSM(template, input);
-          console.log(res);
+          const result = window.parseTextFSM(template, input);
+          const resultsEl = document.getElementById("results");
 
-          document.getElementById("results").textContent =
-            "Parse function called. Check browser and server logs.";
+          if (result.error) {
+            resultsEl.textContent = "Error: " + result.error;
+            resultsEl.classList.add("text-red-500");
+          } else {
+            // The data is a JSON string, so we parse it to get the object,
+            // then stringify it again for pretty-printing.
+            const formattedJson = JSON.stringify(
+              JSON.parse(result.data),
+              null,
+              2
+            );
+            resultsEl.textContent = formattedJson;
+            resultsEl.classList.remove("text-red-500");
+          }
         })
         .catch((error) => {
           console.error("Error accessing WebAssembly module:", error);
