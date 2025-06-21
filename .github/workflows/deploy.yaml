@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - version.txt
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -23,6 +24,11 @@ jobs:
       - name: Generate dist folder
         working-directory: wasm
         run: make build
+          
+      - name: Setup Binaryen
+        uses: mwilliamson/setup-wabt-action@v2
+        with:
+          wabt-version: "1.0.32"
 
       - name: Push to deploy branch
         uses: peaceiris/actions-gh-pages@v4
