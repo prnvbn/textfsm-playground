@@ -20,15 +20,15 @@ jobs:
       - name: Get version
         id: version
         run: echo "version=$(head -c -1 version.txt)" >> $GITHUB_ENV
-
-      - name: Generate dist folder
-        working-directory: wasm
-        run: make build
           
       - name: Setup Binaryen
         uses: mwilliamson/setup-wabt-action@v2
         with:
           wabt-version: "1.0.32"
+
+      - name: Generate dist folder
+        working-directory: wasm
+        run: make build
 
       - name: Push to deploy branch
         uses: peaceiris/actions-gh-pages@v4
