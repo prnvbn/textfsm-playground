@@ -12,9 +12,9 @@ build: wasm_exec.js main.wasm
 wasm_exec.js:
 	cp $(shell go env GOROOT)/lib/wasm/wasm_exec.js .
 
-# TODO: use wasm opt to optimize the wasm binary
 main.wasm: main.go $(shell find .. -name '*.go')
 	GOOS=js GOARCH=wasm go build -o main.wasm ./main.go
+	wasm-opt main.wasm --enable-bulk-memory -Oz -o main.wasm
 
 clean:
 	rm -f wasm_exec.js main.wasm
