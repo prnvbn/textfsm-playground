@@ -58,46 +58,54 @@ function createEditors() {
     attributeFilter: ["class"],
   });
 
-  document
-    .getElementById("parse-button")
-    .addEventListener("click", async function () {
-      const template = templateEditor.value;
-      const input = inputEditor.value;
-      const resultsEditor = document.getElementById("results-editor");
-      const resultsContainer = resultsEditor.parentElement;
+  const parseFunction = async function () {
+    const template = templateEditor.value;
+    const input = inputEditor.value;
+    const resultsEditor = document.getElementById("results-editor");
+    const resultsContainer = resultsEditor.parentElement;
 
-      const flashBorder = (success) => {
-        const originalDarkBorder = "dark:border-github-dark-border";
-        const successClasses = ["border-green-500", "dark:border-green-500"];
-        const errorClasses = ["border-red-500", "dark:border-red-500"];
+    const flashBorder = (success) => {
+      const originalDarkBorder = "dark:border-github-dark-border";
+      const successClasses = ["border-green-500", "dark:border-green-500"];
+      const errorClasses = ["border-red-500", "dark:border-red-500"];
 
-        const classesToAdd = success ? successClasses : errorClasses;
+      const classesToAdd = success ? successClasses : errorClasses;
 
-        resultsContainer.classList.remove(originalDarkBorder);
-        resultsContainer.classList.add(...classesToAdd);
+      resultsContainer.classList.remove(originalDarkBorder);
+      resultsContainer.classList.add(...classesToAdd);
 
-        setTimeout(() => {
-          resultsContainer.classList.remove(...classesToAdd);
-          resultsContainer.classList.add(originalDarkBorder);
-        }, 1000);
-      };
+      setTimeout(() => {
+        resultsContainer.classList.remove(...classesToAdd);
+        resultsContainer.classList.add(originalDarkBorder);
+      }, 1000);
+    };
 
-      try {
-        await wasmPromise;
+    try {
+      await wasmPromise;
 
-        resultsEditor.value = "Parsing...";
+      resultsEditor.value = "Parsing...";
 
-        const jsonString = await window.parseTextFSM(template, input);
+      const jsonString = await window.parseTextFSM(template, input);
 
-        const formattedJson = JSON.stringify(JSON.parse(jsonString), null, 2);
-        resultsEditor.value = formattedJson;
-        flashBorder(true);
-      } catch (error) {
-        console.error("An error occurred:", error);
-        resultsEditor.value = "Error: " + error.message;
-        flashBorder(false);
-      }
-    });
+      const formattedJson = JSON.stringify(JSON.parse(jsonString), null, 2);
+      resultsEditor.value = formattedJson;
+      flashBorder(true);
+    } catch (error) {
+      console.error("An error occurred:", error);
+      resultsEditor.value = "Error: " + error.message;
+      flashBorder(false);
+    }
+  };
+
+  // Add keyboard shortcut (Shift+Enter)
+  const parseButton = document.getElementById("parse-button");
+  parseButton.addEventListener("click", parseFunction);
+  document.addEventListener("keydown", function (event) {
+    if (event.shiftKey && event.key === "Enter") {
+      event.preventDefault();
+      parseFunction();
+    }
+  });
 }
 
 export function init() {
