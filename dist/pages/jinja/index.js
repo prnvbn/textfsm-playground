@@ -120,7 +120,7 @@ function createEditors() {
   document.addEventListener("keydown", function (event) {
     if (event.shiftKey && event.key === "Enter") {
       event.preventDefault();
-      parseFunction();
+      document.getElementById("render-button").click();
     }
   });
 }
