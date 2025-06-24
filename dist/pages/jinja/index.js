@@ -24,7 +24,7 @@ function createEditors() {
   ]).then(() => {
     // Register Jinja language after Monaco is available
     registerJinjaLanguage();
-    
+
     // Set default Jinja template
     templateEditor.value = [
       "Hello {{ name }}!",
@@ -116,6 +116,13 @@ function createEditors() {
         flashBorder(false);
       }
     });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.shiftKey && event.key === "Enter") {
+      event.preventDefault();
+      parseFunction();
+    }
+  });
 }
 
 export function init() {
